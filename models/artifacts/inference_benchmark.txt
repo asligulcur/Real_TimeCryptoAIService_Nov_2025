@@ -1,0 +1,10 @@
+Inference Speed Benchmark
+==================================================
+total_samples: 6447
+inference_time_seconds: 0.025967836380004883
+samples_per_second: 248268.662265762
+time_per_sample_ms: 0.00402789458352798
+window_seconds: 60
+max_allowed_seconds: 120
+speedup_vs_realtime: 4621.10120550511
+meets_requirement: True

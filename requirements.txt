@@ -1,0 +1,93 @@
+# Python dependencies for Crypto Volatility Detection System
+# Generated for CMU Heinz Crypto Volatility Assignment
+# Last Updated: November 12, 2025
+
+# ============================================================================
+# MILESTONE 1: Streaming & Ingestion
+# ============================================================================
+# Kafka client for Python
+kafka-python==2.0.2
+
+# WebSocket client library
+websocket-client==1.9.0
+
+# ============================================================================
+# MILESTONE 2: Feature Engineering & Data Processing
+# ============================================================================
+# Data manipulation and analysis
+pandas==2.3.3
+numpy==2.3.4
+
+# Data drift monitoring
+evidently==0.7.15
+
+# Configuration management
+PyYAML==6.0.2
+
+# ============================================================================
+# MILESTONE 3: Machine Learning & Modeling
+# ============================================================================
+# Machine learning framework
+scikit-learn==1.7.2
+
+# Model serialization
+joblib==1.4.2
+
+# Experiment tracking
+mlflow==3.5.1
+
+# ============================================================================
+# WEEK 4: API Service
+# ============================================================================
+# FastAPI web framework for building APIs
+fastapi==0.115.0
+
+# ASGI server for running FastAPI
+uvicorn[standard]==0.32.0
+
+# Prometheus metrics for monitoring
+prometheus-client==0.21.0
+
+# Pydantic for request/response validation (included with FastAPI)
+pydantic==2.9.2
+
+# ============================================================================
+# WEEK 5: CI/CD & Testing
+# ============================================================================
+# Code formatting
+black==24.10.0
+
+# Fast Python linter
+ruff==0.8.0
+
+# Testing framework
+pytest==8.3.3
+
+# Test coverage
+pytest-cov==6.0.0
+
+# HTTP requests library (for testing API)
+requests==2.32.3
+
+# Security vulnerability scanner
+safety==3.2.8
+
+# ============================================================================
+# WEEK 6: Production Monitoring & Operations
+# ============================================================================
+# Grafana dashboard provisioning (managed via Docker)
+# prometheus 2.48.0 (managed via Docker)
+# grafana 10.2.2 (managed via Docker)
+
+# Python packages for drift detection
+scipy==1.14.1  # Required by evidently for statistical tests
+
+# ============================================================================
+# Additional Dependencies
+# ============================================================================
+# For Jupyter notebooks (if needed)
+# jupyter==1.1.1
+# notebook==7.3.2
+
+# Note: All version numbers match the packages used in development
+# to ensure reproducibility

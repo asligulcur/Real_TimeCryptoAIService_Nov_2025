@@ -1,0 +1,40 @@
+# Dockerfile for FastAPI Crypto Volatility Prediction Service
+# This containerizes your API so it runs consistently everywhere
+
+FROM python:3.13-slim
+
+# Set working directory inside container
+WORKDIR /app
+
+# Install system dependencies (if needed for numpy/pandas)
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    gcc \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copy requirements file first (Docker caching optimization)
+# If requirements don't change, this layer is cached
+COPY requirements.txt .
+
+# Install Python dependencies
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy the API code
+COPY api/ ./api/
+
+# Copy the trained model artifacts
+COPY models/artifacts/ ./models/artifacts/
+
+# Expose port 8000 (FastAPI default)
+EXPOSE 8000
+
+# Health check - Docker will ping /health every 30s
+HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
+    CMD python -c "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"
+
+# Set environment variables
+ENV PYTHONUNBUFFERED=1 \
+    MODEL_PATH=/app/models/artifacts/random_forest.joblib
+
+# Run the FastAPI application
+# Using python -m uvicorn for better error handling
+CMD ["python", "-m", "uvicorn", "api.main:app", "--host", "0.0.0.0", "--port", "8000"]

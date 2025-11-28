@@ -1,0 +1,15 @@
+artifact_uri: file:///Users/asligulcur/Library/CloudStorage/OneDrive-Personal/CMU
+  Heinz Foundations of Operationalizing AI October 2025/Crypto Volatility Real Time/mlruns/945149043493237412/002563d7e6c44a65bd44e77e56a961c8/artifacts
+end_time: 1762651452924
+entry_point_name: ''
+experiment_id: '945149043493237412'
+lifecycle_stage: active
+run_id: 002563d7e6c44a65bd44e77e56a961c8
+run_name: z_score_baseline
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1762651452905
+status: 3
+tags: []
+user_id: asligulcur

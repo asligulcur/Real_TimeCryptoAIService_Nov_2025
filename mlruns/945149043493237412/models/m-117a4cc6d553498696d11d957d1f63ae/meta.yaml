@@ -1,0 +1,11 @@
+artifact_location: file:///Users/asligulcur/Library/CloudStorage/OneDrive-Personal/CMU
+  Heinz Foundations of Operationalizing AI October 2025/Crypto Volatility Real Time/mlruns/945149043493237412/models/m-117a4cc6d553498696d11d957d1f63ae/artifacts
+creation_timestamp: 1763324743508
+experiment_id: '945149043493237412'
+last_updated_timestamp: 1763324747059
+model_id: m-117a4cc6d553498696d11d957d1f63ae
+model_type: null
+name: model
+source_run_id: feb80465b13a4f4a88f2ea7f7d174cc4
+status: 2
+status_message: null

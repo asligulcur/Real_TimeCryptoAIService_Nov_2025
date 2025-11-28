@@ -1,0 +1,215 @@
+# Configuration for Crypto Volatility Detection System
+# CMU Heinz - Foundations of Operationalizing AI
+# Author: Asli Gulcur
+# Date: November 8, 2025
+
+# ============================================================================
+# KAFKA CONFIGURATION
+# ============================================================================
+kafka:
+  bootstrap_servers: "localhost:9092"
+  topics:
+    raw: "ticks.raw"
+    features: "ticks.features"
+  consumer_group: "crypto-volatility-consumer"
+  # Timeout settings (milliseconds)
+  session_timeout_ms: 10000
+  request_timeout_ms: 30000
+  # Auto-offset reset: earliest, latest, none
+  auto_offset_reset: "earliest"
+
+# ============================================================================
+# COINBASE WEBSOCKET CONFIGURATION
+# ============================================================================
+websocket:
+  url: "wss://ws-feed.exchange.coinbase.com"
+  channels:
+    - "ticker"
+  symbols:
+    - "BTC-USD"
+    - "ETH-USD"
+  # Reconnection settings
+  max_reconnect_attempts: 5
+  reconnect_delay_seconds: 5
+  # Heartbeat monitoring
+  heartbeat_interval_seconds: 30
+  heartbeat_timeout_seconds: 60
+
+# ============================================================================
+# MLFLOW CONFIGURATION
+# ============================================================================
+mlflow:
+  tracking_uri: "http://localhost:5001"
+  experiment_name: "crypto-volatility-detection"
+  # Set to null to use local file backend (mlruns/)
+  backend_store_uri: null
+  artifact_location: "./mlruns"
+
+# ============================================================================
+# FEATURE ENGINEERING CONFIGURATION
+# ============================================================================
+features:
+  # Rolling window sizes (seconds)
+  return_windows: [10, 30, 60]
+  volatility_windows: [30, 60, 120]
+  intensity_windows: [30, 60, 120]
+  
+  # Buffer size for rolling calculations
+  buffer_max_length: 500
+  
+  # Target horizon for prediction (seconds)
+  target_horizon: 60
+  
+  # Volatility spike threshold (95th percentile from EDA)
+  spike_threshold: 0.041799
+  
+  # Feature list (for validation)
+  feature_names:
+    - "price"
+    - "bid"
+    - "ask"
+    - "return_10s"
+    - "return_30s"
+    - "return_60s"
+    - "volatility_30s"
+    - "volatility_60s"
+    - "volatility_120s"
+    - "spread"
+    - "intensity_30s"
+    - "intensity_60s"
+    - "intensity_120s"
+
+# ============================================================================
+# MODEL CONFIGURATION
+# ============================================================================
+model:
+  # Model selection: baseline, logistic_regression, random_forest
+  selected_model: "random_forest"
+  
+  # Random Forest hyperparameters
+  random_forest:
+    n_estimators: 100
+    max_depth: 10
+    min_samples_split: 20
+    min_samples_leaf: 10
+    random_state: 42
+    n_jobs: -1
+  
+  # Logistic Regression hyperparameters
+  logistic_regression:
+    C: 1.0
+    max_iter: 1000
+    random_state: 42
+  
+  # Z-Score Baseline parameters
+  baseline:
+    threshold: 2.0  # Number of standard deviations
+
+# ============================================================================
+# DATA CONFIGURATION
+# ============================================================================
+data:
+  # Data directories (relative to project root)
+  raw_dir: "data/raw"
+  processed_dir: "data/processed"
+  eda_dir: "data/eda"
+  
+  # File formats
+  raw_format: "ndjson"  # newline-delimited JSON
+  processed_format: "parquet"
+  
+  # Train/validation/test split ratios
+  train_ratio: 0.70
+  validation_ratio: 0.15
+  test_ratio: 0.15
+  
+  # Stratification
+  stratify: true
+  stratify_column: "volatility_spike"
+
+# ============================================================================
+# INFERENCE CONFIGURATION
+# ============================================================================
+inference:
+  # Performance requirements
+  max_latency_ms: 10.0  # Maximum latency per prediction
+  target_throughput: 1000  # Predictions per second
+  
+  # Real-time requirements
+  real_time_multiplier: 2.0  # Must be < 2x real-time
+  
+  # Output configuration
+  output_format: "csv"
+  include_probabilities: true
+
+# ============================================================================
+# MONITORING CONFIGURATION
+# ============================================================================
+monitoring:
+  # Evidently drift detection
+  evidently:
+    reference_window: "train"  # train, validation, or custom
+    current_window: "test"
+    drift_threshold: 0.05  # p-value threshold for statistical tests
+    
+  # Data quality checks
+  data_quality:
+    max_missing_rate: 0.001  # 0.1%
+    max_duplicate_rate: 0.001  # 0.1%
+    min_samples_per_hour: 100
+  
+  # Model performance monitoring
+  model_monitoring:
+    min_f1_score: 0.80
+    min_pr_auc: 0.90
+    retrain_on_drift: true
+    retrain_schedule: "weekly"
+
+# ============================================================================
+# LOGGING CONFIGURATION
+# ============================================================================
+logging:
+  level: "INFO"  # DEBUG, INFO, WARNING, ERROR, CRITICAL
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  
+  # Log file configuration
+  file:
+    enabled: true
+    path: "logs/crypto_volatility.log"
+    max_bytes: 10485760  # 10MB
+    backup_count: 5
+  
+  # Console logging
+  console:
+    enabled: true
+    colorize: true
+
+# ============================================================================
+# DOCKER CONFIGURATION
+# ============================================================================
+docker:
+  # Service ports
+  kafka_port: 9092
+  zookeeper_port: 2181
+  mlflow_port: 5001
+  
+  # Volume mounts
+  volumes:
+    mlflow_data: "./docker/mlflow_data"
+    kafka_data: "/var/lib/kafka/data"
+  
+  # Network configuration
+  network_name: "crypto-volatility-net"
+
+# ============================================================================
+# ENVIRONMENT OVERRIDES
+# ============================================================================
+# Note: Environment variables take precedence over this config file
+# Use .env file or export variables to override these settings
+#
+# Example environment variables:
+#   KAFKA_BOOTSTRAP_SERVERS=localhost:9092
+#   MLFLOW_TRACKING_URI=http://localhost:5001
+#   MODEL_SPIKE_THRESHOLD=0.041799
+#
+# See .env.example for a complete list of supported environment variables

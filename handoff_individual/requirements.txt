@@ -1,0 +1,44 @@
+# Python dependencies for Crypto Volatility Detection System - Team Handoff
+# Generated for CMU Heinz Crypto Volatility Assignment
+# Last Updated: November 12, 2025
+
+# ============================================================================
+# STREAMING & INGESTION
+# ============================================================================
+# Kafka client for Python
+kafka-python==2.0.2
+
+# WebSocket client library
+websocket-client==1.9.0
+
+# ============================================================================
+# DATA PROCESSING & FEATURE ENGINEERING
+# ============================================================================
+# Data manipulation and analysis
+pandas==2.3.3
+numpy==2.3.4
+
+# Data drift monitoring
+evidently==0.7.15
+
+# Configuration management
+PyYAML==6.0.2
+
+# ============================================================================
+# MACHINE LEARNING & INFERENCE
+# ============================================================================
+# Machine learning framework
+scikit-learn==1.7.2
+
+# Model serialization
+joblib==1.4.2
+
+# Experiment tracking
+mlflow==3.5.1
+
+# ============================================================================
+# NOTES FOR TEAM
+# ============================================================================
+# All dependencies are pinned to specific versions for reproducibility
+# Install all at once: pip install -r requirements.txt
+# Tested with Python 3.13+

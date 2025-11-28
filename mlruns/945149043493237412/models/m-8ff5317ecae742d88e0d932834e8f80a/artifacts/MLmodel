@@ -1,0 +1,23 @@
+artifact_path: file:///Users/asligulcur/Library/CloudStorage/OneDrive-Personal/CMU
+  Heinz Foundations of Operationalizing AI October 2025/Crypto Volatility Real Time/mlruns/945149043493237412/models/m-8ff5317ecae742d88e0d932834e8f80a/artifacts
+flavors:
+  python_function:
+    env:
+      conda: conda.yaml
+      virtualenv: python_env.yaml
+    loader_module: mlflow.sklearn
+    model_path: model.pkl
+    predict_fn: predict
+    python_version: 3.12.7
+  sklearn:
+    code: null
+    pickled_model: model.pkl
+    serialization_format: cloudpickle
+    sklearn_version: 1.5.1
+mlflow_version: 3.6.0
+model_id: m-8ff5317ecae742d88e0d932834e8f80a
+model_size_bytes: 94232
+model_uuid: m-8ff5317ecae742d88e0d932834e8f80a
+prompts: null
+run_id: b1365b93343e4a188c8886f81e3c5718
+utc_time_created: '2025-11-13 23:37:33.617299'

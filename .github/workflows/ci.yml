@@ -1,0 +1,156 @@
+# CI/CD Pipeline for Crypto Volatility Detection System
+# Runs on every push and pull request to main/develop branches
+
+name: CI Pipeline
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  # Job 1: Code Quality Checks (Linting & Formatting)
+  lint:
+    name: Code Quality (Black + Ruff)
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+    
+    - name: Set up Python 3.13
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.13'
+        cache: 'pip'
+    
+    - name: Install linting tools
+      run: |
+        pip install black ruff
+    
+    - name: Run Black (code formatter check)
+      run: |
+        black --check --diff api/ models/ data_processing/ || echo "❌ Black formatting issues found"
+        black --check --diff api/ models/ data_processing/
+    
+    - name: Run Ruff (linter)
+      run: |
+        ruff check api/ models/ data_processing/ --output-format=github
+
+  # Job 2: Unit Tests
+  test:
+    name: Unit & Integration Tests
+    runs-on: ubuntu-latest
+    needs: lint  # Only run if linting passes
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+    
+    - name: Set up Python 3.13
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.13'
+        cache: 'pip'
+    
+    - name: Install dependencies
+      run: |
+        pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install pytest pytest-cov requests
+    
+    - name: Run API unit tests
+      run: |
+        pytest api/test_api.py -v --cov=api --cov-report=term-missing
+    
+    - name: Upload coverage reports
+      uses: codecov/codecov-action@v3
+      if: always()
+      with:
+        files: ./coverage.xml
+        flags: unittests
+        name: codecov-umbrella
+
+  # Job 3: Integration Test (API with Model)
+  integration:
+    name: Integration Test (API + Model)
+    runs-on: ubuntu-latest
+    needs: test
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+    
+    - name: Set up Python 3.13
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.13'
+        cache: 'pip'
+    
+    - name: Install dependencies
+      run: |
+        pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install pytest requests
+    
+    - name: Start API server
+      run: |
+        cd api
+        python -m uvicorn main:app --host 0.0.0.0 --port 8000 &
+        sleep 10  # Wait for server to start
+    
+    - name: Run integration test
+      run: |
+        python -m pytest tests/test_integration.py -v
+    
+    - name: Check API health
+      run: |
+        curl -f http://localhost:8000/health || exit 1
+
+  # Job 4: Docker Build Test
+  docker:
+    name: Docker Build Validation
+    runs-on: ubuntu-latest
+    needs: lint
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+    
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v2
+    
+    - name: Build API Docker image
+      run: |
+        docker build -f Dockerfile.api -t crypto-api:test .
+    
+    - name: Test Docker image runs
+      run: |
+        docker run -d --name test-api -p 8000:8000 crypto-api:test
+        sleep 15
+        curl -f http://localhost:8000/health || exit 1
+        docker logs test-api
+        docker stop test-api
+
+  # Job 5: Security Scan
+  security:
+    name: Security Vulnerability Scan
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+    
+    - name: Set up Python 3.13
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.13'
+    
+    - name: Install safety
+      run: pip install safety
+    
+    - name: Check dependencies for vulnerabilities
+      run: |
+        pip install -r requirements.txt
+        safety check --json || true  # Don't fail on vulnerabilities yet
