@@ -13,17 +13,17 @@ Date: November 2025
 """
 
 import os
+import sys
 import time
 from datetime import datetime
 from pathlib import Path
-from typing import Dict, List, Optional
 
 import joblib
 import numpy as np
 import pandas as pd
 from fastapi import FastAPI, HTTPException, status
 from fastapi.responses import PlainTextResponse
-from prometheus_client import Counter, Histogram, generate_latest
+from prometheus_client import Counter, Gauge, Histogram, Info, generate_latest
 from pydantic import BaseModel, Field
 
 # ============================================================================
@@ -119,8 +119,6 @@ model_loaded_gauge = Counter(
 )
 
 # Kafka consumer lag (will be updated externally)
-from prometheus_client import Gauge
-
 consumer_lag_gauge = Gauge(
     "kafka_consumer_lag",
     "Kafka consumer lag in messages",
@@ -148,8 +146,6 @@ health_counter = Counter(
 )
 
 # Model variant indicator
-from prometheus_client import Info
-
 model_info = Info("model", "Information about the active model")
 
 # Model variant gauge (1 for active variant, 0 for inactive)
@@ -228,7 +224,7 @@ class FeatureInput(BaseModel):
 class BatchFeatureInput(BaseModel):
     """Batch of feature inputs for predictions."""
 
-    features: List[FeatureInput] = Field(..., description="List of feature sets")
+    features: list[FeatureInput] = Field(..., description="List of feature sets")
 
 
 class PredictionResponse(BaseModel):
@@ -253,7 +249,7 @@ class PredictionResponse(BaseModel):
 class BatchPredictionResponse(BaseModel):
     """Batch prediction response."""
 
-    predictions: List[PredictionResponse]
+    predictions: list[PredictionResponse]
     count: int
 
 
@@ -273,7 +269,7 @@ class VersionResponse(BaseModel):
     model_version: str = Field(..., description="Model version")
     service_name: str = Field(..., description="Service name")
     python_version: str = Field(..., description="Python version")
-    dependencies: Dict[str, str] = Field(..., description="Key dependency versions")
+    dependencies: dict[str, str] = Field(..., description="Key dependency versions")
 
 
 # ============================================================================
@@ -295,44 +291,52 @@ class AppState:
         try:
             if self.model_variant == "baseline":
                 # Load baseline rule-based model
-                print(f"📊 Loading BASELINE model (rule-based fallback)")
+                print("📊 Loading BASELINE model (rule-based fallback)")
                 sys.path.insert(0, str(PROJECT_ROOT / "ml"))
                 from baseline import load_baseline_model
-                
+
                 self.model = load_baseline_model()
                 self.model_loaded = True
-                print(f"✅ Baseline model loaded successfully")
-                
+                print("✅ Baseline model loaded successfully")
+
                 # Set model info
-                model_info.info({
-                    'variant': 'baseline',
-                    'version': 'baseline-1.0',
-                    'type': 'rule_based',
-                    'description': 'Simple threshold-based fallback model'
-                })
-                
+                model_info.info(
+                    {
+                        "variant": "baseline",
+                        "version": "baseline-1.0",
+                        "type": "rule_based",
+                        "description": "Simple threshold-based fallback model",
+                    }
+                )
+
             else:  # ml variant (default)
                 # Load ML model
                 if not MODEL_PATH.exists():
                     raise FileNotFoundError(f"Model not found at {MODEL_PATH}")
-                
+
                 print(f"🤖 Loading ML model from {MODEL_PATH}")
                 self.model = joblib.load(MODEL_PATH)
                 self.model_loaded = True
                 print(f"✅ ML model loaded successfully from {MODEL_PATH}")
-                
+
                 # Set model info
-                model_info.info({
-                    'variant': 'ml',
-                    'version': MODEL_VERSION,
-                    'type': 'random_forest',
-                    'description': 'Production Random Forest model'
-                })
-            
+                model_info.info(
+                    {
+                        "variant": "ml",
+                        "version": MODEL_VERSION,
+                        "type": "random_forest",
+                        "description": "Production Random Forest model",
+                    }
+                )
+
             # Set variant gauges
-            model_variant_gauge.labels(variant="ml").set(1 if self.model_variant == "ml" else 0)
-            model_variant_gauge.labels(variant="baseline").set(1 if self.model_variant == "baseline" else 0)
-            
+            model_variant_gauge.labels(variant="ml").set(
+                1 if self.model_variant == "ml" else 0
+            )
+            model_variant_gauge.labels(variant="baseline").set(
+                1 if self.model_variant == "baseline" else 0
+            )
+
         except Exception as e:
             print(f"❌ Error loading model: {e}")
             raise
@@ -359,7 +363,7 @@ async def startup_event():
     if MODEL_VARIANT == "ml":
         print(f"📍 Model path: {MODEL_PATH}")
     else:
-        print(f"📍 Using baseline rule-based model")
+        print("📍 Using baseline rule-based model")
 
     try:
         state.load_model()
@@ -422,8 +426,9 @@ async def get_version():
         VersionResponse: Version details
     """
     import sys
-    import sklearn
+
     import fastapi
+    import sklearn
 
     return VersionResponse(
         api_version=API_VERSION,
@@ -465,7 +470,9 @@ async def predict(features: FeatureInput):
 
     # Increment request counter
     predict_counter.labels(model_version=MODEL_VERSION).inc()
-    request_counter.labels(endpoint="/predict", method="POST", status="processing").inc()
+    request_counter.labels(
+        endpoint="/predict", method="POST", status="processing"
+    ).inc()
 
     # Check if model is loaded
     if not state.model_loaded:
@@ -479,7 +486,7 @@ async def predict(features: FeatureInput):
     try:
         # Convert input to appropriate format
         feature_dict = features.dict()
-        
+
         if state.model_variant == "baseline":
             # Baseline model expects dict input
             prediction = int(state.model.predict(feature_dict))
@@ -523,14 +530,14 @@ async def predict(features: FeatureInput):
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=f"Invalid input: {str(e)}",
-        )
+        ) from e
     except Exception as e:
         predict_errors.labels(error_type="internal_error").inc()
         request_counter.labels(endpoint="/predict", method="POST", status="500").inc()
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Prediction failed: {str(e)}",
-        )
+        ) from e
 
 
 @app.post(

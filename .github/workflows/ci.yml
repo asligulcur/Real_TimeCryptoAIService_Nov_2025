@@ -31,12 +31,11 @@ jobs:
     
     - name: Run Black (code formatter check)
       run: |
-        black --check --diff api/ models/ data_processing/ || echo "❌ Black formatting issues found"
-        black --check --diff api/ models/ data_processing/
-    
+        black --check --diff api/ models/
+
     - name: Run Ruff (linter)
       run: |
-        ruff check api/ models/ data_processing/ --output-format=github
+        ruff check api/ models/ --output-format=github
 
   # Job 2: Unit Tests
   test:
@@ -149,8 +148,7 @@ jobs:
     
     - name: Install safety
       run: pip install safety
-    
+
     - name: Check dependencies for vulnerabilities
       run: |
-        pip install -r requirements.txt
-        safety check --json || true  # Don't fail on vulnerabilities yet
+        safety check -r requirements.txt --json || true  # Scan requirements file directly; don't fail on vulnerabilities

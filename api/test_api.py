@@ -4,10 +4,11 @@ Test script for the Crypto Volatility API.
 Tests all endpoints with sample data.
 """
 
-import requests
 import json
 import time
 from datetime import datetime
+
+import requests
 
 # API configuration
 BASE_URL = "http://localhost:8000"
@@ -87,7 +88,7 @@ def test_health():
         assert data["status"] in ["healthy", "degraded"], "Invalid status"
         assert "model_loaded" in data, "Missing model_loaded field"
 
-        print(f"\n✅ Health check working")
+        print("\n✅ Health check working")
         print(f"   Status: {data['status']}")
         print(f"   Model Loaded: {data['model_loaded']}")
         print(f"   Uptime: {data['uptime_seconds']:.2f}s")
@@ -113,7 +114,7 @@ def test_version():
         assert "api_version" in data, "Missing api_version"
         assert "model_version" in data, "Missing model_version"
 
-        print(f"\n✅ Version endpoint working")
+        print("\n✅ Version endpoint working")
         print(f"   API Version: {data['api_version']}")
         print(f"   Model Version: {data['model_version']}")
         return True
@@ -146,7 +147,7 @@ def test_predict_normal():
         assert "prediction" in data, "Missing prediction"
         assert "probability" in data, "Missing probability"
 
-        print(f"\n✅ Prediction working")
+        print("\n✅ Prediction working")
         print(f"   Prediction: {'SPIKE' if data['prediction'] == 1 else 'NORMAL'}")
         print(f"   Probability: {data['probability']:.4f}")
         print(f"   Model Version: {data['model_version']}")
@@ -178,7 +179,7 @@ def test_predict_spike():
 
         assert response.status_code == 200, "Prediction failed"
 
-        print(f"\n✅ High volatility prediction working")
+        print("\n✅ High volatility prediction working")
         print(f"   Prediction: {'SPIKE' if data['prediction'] == 1 else 'NORMAL'}")
         print(f"   Probability: {data['probability']:.4f}")
 
@@ -217,7 +218,7 @@ def test_predict_batch():
         assert response.status_code == 200, "Batch prediction failed"
         assert data["count"] == 2, "Wrong number of predictions"
 
-        print(f"\n✅ Batch prediction working")
+        print("\n✅ Batch prediction working")
         return True
 
     except Exception as e:
@@ -234,14 +235,14 @@ def test_metrics():
         print(f"Status Code: {response.status_code}")
 
         metrics_text = response.text
-        print(f"\nSample Metrics (first 500 chars):")
+        print("\nSample Metrics (first 500 chars):")
         print(metrics_text[:500])
         print("...")
 
         assert response.status_code == 200, "Metrics endpoint failed"
         assert "predict_requests_total" in metrics_text, "Missing prediction metrics"
 
-        print(f"\n✅ Metrics endpoint working")
+        print("\n✅ Metrics endpoint working")
         return True
 
     except Exception as e:
@@ -270,12 +271,12 @@ def test_latency():
         min_latency = min(latencies)
         max_latency = max(latencies)
 
-        print(f"Completed 10 predictions:")
+        print("Completed 10 predictions:")
         print(f"  Average: {avg_latency:.2f}ms")
         print(f"  Min: {min_latency:.2f}ms")
         print(f"  Max: {max_latency:.2f}ms")
 
-        print(f"\n✅ Latency test passed")
+        print("\n✅ Latency test passed")
         return True
 
     except Exception as e:
@@ -293,7 +294,7 @@ def main():
 
     # Check if API is reachable
     try:
-        response = requests.get(f"{BASE_URL}/", timeout=2)
+        requests.get(f"{BASE_URL}/", timeout=2)
         print("✅ API is reachable")
     except Exception as e:
         print(f"\n❌ Cannot reach API at {BASE_URL}")
