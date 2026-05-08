@@ -80,7 +80,7 @@ safety==3.2.8
 # grafana 10.2.2 (managed via Docker)
 
 # Python packages for drift detection
-scipy==1.14.1  # Required by evidently for statistical tests
+scipy>=1.16.0,<1.18  # Required by evidently for statistical tests; >=1.16 needed for numpy 2.3 compatibility
 
 # ============================================================================
 # Additional Dependencies
