@@ -1,0 +1,57 @@
+# ---- Secrets / environment ----
+.env
+.env.local
+*.env
+!.env.example
+
+# ---- Python ----
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+.venv/
+venv/
+env/
+.python-version
+
+# ---- Testing / coverage ----
+.coverage
+.coverage.*
+htmlcov/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# ---- Notebooks ----
+.ipynb_checkpoints/
+
+# ---- ML / experiment artifacts ----
+mlruns/
+models/
+*.pkl
+*.joblib
+*.h5
+*.onnx
+*.pt
+*.ckpt
+
+# ---- Data (large / generated) ----
+data/processed/
+data/raw/
+*.parquet
+*.csv
+*.db
+*.sqlite
+
+# ---- Logs / reports ----
+*.log
+LOAD_TEST_REPORT.json
+
+# ---- OS / editor cruft ----
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
