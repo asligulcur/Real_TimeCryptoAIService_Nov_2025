@@ -41,6 +41,7 @@ Real-time inference on market data is mostly a systems problem. Prices arrive co
 │     • returns        windows 10s / 30s / 60s                                │
 │     • volatility     windows 30s / 60s / 120s  (std of tick returns)        │
 │     • trade intensity windows 30s / 60s / 120s                              │
+│     • raw price / bid / ask  (3)                                            │
 │     • bid-ask spread  → 13 features total; written to Parquet + Kafka       │
 └───────────────────────────────────┬───────────────────────────────────────┘
                                      ▼

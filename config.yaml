@@ -28,9 +28,9 @@ websocket:
   symbols:
     - "BTC-USD"
     - "ETH-USD"
-  # Reconnection settings
-  max_reconnect_attempts: 5
-  reconnect_delay_seconds: 5
+  # Reconnection settings (authoritative values live in scripts/ws_ingest_resilient.py)
+  max_reconnect_attempts: 10
+  reconnect_delay_seconds: 1        # initial delay; exponential backoff x2, capped at 60s
   # Heartbeat monitoring
   heartbeat_interval_seconds: 30
   heartbeat_timeout_seconds: 60
