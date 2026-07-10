@@ -5,8 +5,8 @@
 # ============================================================================
 # MILESTONE 1: Streaming & Ingestion
 # ============================================================================
-# Kafka client for Python
-kafka-python==2.0.2
+# Kafka client for Python (kafka-python-ng: maintained fork, supports Python 3.12; drop-in `import kafka`)
+kafka-python-ng>=2.2.0
 
 # WebSocket client library
 websocket-client==1.9.0
@@ -27,8 +27,8 @@ PyYAML==6.0.2
 # ============================================================================
 # MILESTONE 3: Machine Learning & Modeling
 # ============================================================================
-# Machine learning framework
-scikit-learn==1.7.2
+# Machine learning framework (pinned to the version the model artifacts were trained/pickled with)
+scikit-learn==1.5.1
 
 # Model serialization
 joblib==1.4.2
