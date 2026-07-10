@@ -1,8 +1,8 @@
 # Dockerfile for Coinbase WebSocket Ingestor
 # This containerizes the ws_ingest.py script for production deployment
 
-# Use official Python 3.13 slim image (smaller, faster)
-FROM python:3.13-slim
+# Use official Python 3.12 slim image (smaller, faster)
+FROM python:3.12-slim
 
 # Set working directory inside container
 WORKDIR /app

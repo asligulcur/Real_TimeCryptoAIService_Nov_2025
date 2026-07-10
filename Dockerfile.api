@@ -1,7 +1,7 @@
 # Dockerfile for FastAPI Crypto Volatility Prediction Service
 # This containerizes your API so it runs consistently everywhere
 
-FROM python:3.13-slim
+FROM python:3.12-slim
 
 # Set working directory inside container
 WORKDIR /app
