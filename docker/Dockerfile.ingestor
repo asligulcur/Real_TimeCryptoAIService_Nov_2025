@@ -42,6 +42,6 @@ HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
 CMD ["python", "ws_ingest.py"]
 
 # Metadata labels
-LABEL maintainer="CMU Heinz Student"
+LABEL maintainer="Asli Gulcur"
 LABEL description="Real-time cryptocurrency data ingestor using Coinbase WebSocket"
 LABEL version="1.0"

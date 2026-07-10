@@ -132,7 +132,7 @@ ls -lh models/artifacts/random_forest.joblib
 /app/
 ├── api/
 │   ├── main.py              # FastAPI application
-│   ├── test_api.py          # Test suite
+│   ├── api_smoke.py         # Manual smoke test (needs a running server)
 │   └── ...
 ├── models/
 │   └── artifacts/
@@ -140,9 +140,9 @@ ls -lh models/artifacts/random_forest.joblib
 └── requirements.txt         # Python dependencies
 ```
 
-## 🎯 Week 4 Demo
+## 🎯 Demo
 
-For your Week 4 demo, just run:
+For a quick demo, just run:
 ```bash
 cd docker
 ./start_all.sh
@@ -154,7 +154,7 @@ Then show:
 3. **Live prediction**: Use curl command from above
 4. **Metrics**: `curl http://localhost:8000/metrics`
 
-## ✅ Week 4 Checklist
+## ✅ Checklist
 
 - [x] Dockerfile.api created
 - [x] docker-compose.yaml updated with API service

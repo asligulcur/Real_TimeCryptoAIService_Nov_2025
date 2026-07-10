@@ -7,8 +7,7 @@ This API provides endpoints for:
 - Version information
 - Prometheus metrics
 
-Author: CMU Heinz Team
-Course: Operationalizing AI
+Author: Asli Gulcur
 Date: November 2025
 """
 

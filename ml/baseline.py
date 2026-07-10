@@ -4,7 +4,7 @@ Simple baseline model for crypto volatility detection.
 This baseline model uses simple rule-based logic as a fallback when the 
 ML model is experiencing issues or during rollback scenarios.
 
-Author: CMU Heinz OAI Team
+Author: Asli Gulcur
 Date: November 2025
 """
 

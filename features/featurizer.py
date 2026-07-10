@@ -15,8 +15,7 @@ Features calculated:
 - Trade intensity (trades per minute)
 
 Author: Asli Gulcur
-Course: CMU Heinz - Operationalizing AI
-Milestone: 2 - Feature Engineering & EDA
+Author: Asli Gulcur
 """
 
 import json
@@ -539,7 +538,7 @@ class CryptoFeaturizer:
 def main():
     """Main entry point for the featurizer."""
     logger.info("=" * 70)
-    logger.info("🎯 Crypto Volatility Featurizer - Milestone 2")
+    logger.info("🎯 Crypto Volatility Featurizer")
     logger.info("=" * 70)
     
     # Create and run featurizer

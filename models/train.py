@@ -1,6 +1,6 @@
 """
 Model Training Script for Crypto Volatility Detection
-Milestone 3 - CMU Heinz Operationalizing AI
+Author: Asli Gulcur
 
 This script trains baseline and ML models for volatility spike prediction.
 Logs all experiments to MLflow for tracking and comparison.
@@ -221,7 +221,7 @@ def train_random_forest(X_train, X_test, y_train, y_test, feature_cols):
 def main():
     """Main training pipeline."""
     print("=" * 70)
-    print("🚀 CRYPTO VOLATILITY MODEL TRAINING - MILESTONE 3")
+    print("🚀 CRYPTO VOLATILITY MODEL TRAINING")
     print("=" * 70)
 
     # Set MLflow tracking URI to use a local directory

@@ -165,7 +165,7 @@ Exposes metrics for monitoring (Prometheus format).
 
 ```bash
 cd api
-python test_api.py
+python api_smoke.py
 ```
 
 This runs 8 comprehensive tests covering all endpoints.
@@ -381,14 +381,14 @@ pip install -r requirements.txt
 
 ## 👥 Team
 
-**CMU Heinz College - Operationalizing AI**  
-Week 4 Deliverable: API Development
+**Asli Gulcur**  
+Real-time ML serving & monitoring
 
 ---
 
 ## 📄 License
 
-Educational project for CMU Heinz College course.
+Personal project — real-time ML serving and monitoring.
 
 ---
 

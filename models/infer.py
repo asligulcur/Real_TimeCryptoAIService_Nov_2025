@@ -1,6 +1,6 @@
 """
 Model Inference Script for Crypto Volatility Detection
-Milestone 3 - CMU Heinz Operationalizing AI
+Author: Asli Gulcur
 
 This script loads the trained model and performs real-time inference.
 Must score in < 2x real-time for the given window size.
@@ -217,7 +217,7 @@ def main():
     args = parser.parse_args()
 
     print("=" * 70)
-    print("🚀 CRYPTO VOLATILITY INFERENCE - MILESTONE 3")
+    print("🚀 CRYPTO VOLATILITY INFERENCE")
     print("=" * 70)
 
     # Initialize predictor

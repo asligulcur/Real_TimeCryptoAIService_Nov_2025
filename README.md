@@ -70,7 +70,7 @@ Components in `docker/compose.yaml`: Zookeeper, Kafka, MLflow, API, Prometheus, 
 
 ## Quickstart
 
-Requires Docker and Python 3.11+ (the API image uses Python 3.13).
+Requires Docker and Python 3.11+ (the API image uses Python 3.12).
 
 ```bash
 git clone <repo-url> && cd <repo-dir>

@@ -1,10 +1,14 @@
 """
-Test script for the Crypto Volatility API.
+Manual smoke test for the Crypto Volatility API.
 
-Tests all endpoints with sample data.
+Hits every endpoint of a *running* server and exits non-zero if any check fails,
+so it is a real gate when run against a live API (e.g. `python api/api_smoke.py`).
+It is intentionally NOT named `test_*`/`*_test` so pytest does not collect it —
+the automated suite is `tests/` (see tests/test_baseline.py, tests/test_integration.py).
 """
 
 import json
+import sys
 import time
 from datetime import datetime
 
@@ -301,7 +305,7 @@ def main():
         print(f"Error: {e}")
         print("\nMake sure the API is running:")
         print("  cd api && ./start_api.sh")
-        return
+        sys.exit(1)
 
     # Run all tests
     tests = [
@@ -339,6 +343,7 @@ def main():
         print(f"\n⚠️  {total - passed} test(s) failed")
 
     print("\n" + "=" * 60)
+    sys.exit(0 if passed == total else 1)
 
 
 if __name__ == "__main__":
