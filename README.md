@@ -62,7 +62,7 @@ Real-time inference on market data is mostly a systems problem. Prices arrive co
 
 Components in `docker/compose.yaml`: Zookeeper, Kafka, MLflow, API, Prometheus, Grafana. The ingestor, featurizer, and Kafka-lag exporter run as standalone Python processes (not in Compose) — see the pipeline commands below.
 
-![The FastAPI serving layer, live — interactive API docs. `POST /predict` takes the 13-feature vector and returns a spike prediction with probability; `/health`, `/version`, and a Prometheus `/metrics` endpoint round out the service.](docs/api-swagger-docs.png)
+![The live service through FastAPI's auto-generated OpenAPI (Swagger) docs — the interface is framework-provided; the endpoints and schemas are rendered from `api/main.py`. `POST /predict` takes the 13-feature vector and returns a spike prediction with probability; `/health`, `/version`, and a Prometheus `/metrics` endpoint round out the service.](docs/api-swagger-docs.png)
 
 ---
 
