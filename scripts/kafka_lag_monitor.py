@@ -5,7 +5,7 @@ Kafka Consumer Lag Monitor for Prometheus
 This script monitors Kafka consumer lag and exposes metrics via Prometheus.
 It runs as a separate service and updates the consumer_lag_gauge metric.
 
-Author: CMU Heinz Team
+Author: Asli Gulcur
 Date: November 2025
 """
 

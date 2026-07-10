@@ -1,5 +1,5 @@
 """
-Week 6 System Verification Script
+System Verification Script
 Tests all components end-to-end to ensure everything is working
 """
 
@@ -9,7 +9,7 @@ import sys
 from datetime import datetime
 
 print("="*70)
-print("🔍 WEEK 6 SYSTEM VERIFICATION")
+print("🔍 SYSTEM VERIFICATION")
 print("="*70)
 print(f"Timestamp: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
 

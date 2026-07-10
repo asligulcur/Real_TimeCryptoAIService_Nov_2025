@@ -2,7 +2,7 @@
 
 **Last Updated:** November 26, 2025  
 **Version:** 1.0  
-**Owner:** CMU Heinz OAI Team  
+**Owner:** Asli Gulcur  
 **Severity Levels:** 🟢 P4 (Info) | 🟡 P3 (Warning) | 🟠 P2 (Urgent) | 🔴 P1 (Critical)
 
 ---
@@ -89,7 +89,7 @@
 
 ```bash
 # Navigate to project directory
-cd "/Users/asligulcur/Library/CloudStorage/OneDrive-Personal/CMU Heinz Foundations of Operationalizing AI October 2025/Crypto Volatility Real Time"
+cd /path/to/Real_TimeCryptoAIService_Nov_2025
 
 # Start infrastructure (Kafka, MLflow, Prometheus, Grafana)
 cd docker
@@ -960,7 +960,7 @@ netstat -tulpn # Port usage
 
 | Version | Date | Author | Changes |
 |---------|------|--------|---------|
-| 1.0 | 2025-11-26 | OAI Team | Initial runbook creation |
+| 1.0 | 2025-11-26 | Asli Gulcur | Initial runbook creation |
 
 ---
 

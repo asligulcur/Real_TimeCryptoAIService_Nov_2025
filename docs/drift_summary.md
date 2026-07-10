@@ -223,7 +223,7 @@ reports/drift/drift_metrics.json
 - **Grafana Dashboard:** http://localhost:3000 - Real-time monitoring
 
 ### Retraining Resources
-- **Training Pipeline:** `scripts/train_model.py` (not yet created for Week 6)
+- **Training Pipeline:** `models/train.py`
 - **Feature Engineering:** `ml/features.py` - Feature calculation logic
 - **Model Registry:** MLflow at http://localhost:5001
 - **Baseline Model:** `models/artifacts/random_forest.joblib`

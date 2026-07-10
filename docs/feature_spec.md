@@ -361,9 +361,9 @@ return_30s = (price_T - price_{T-30s}) / price_{T-30s}
 | **price/bid/ask** | ⭐ | Absolute values less predictive than derived features |
 
 **Note:** Actual importance will be measured via:
-- Permutation importance (Milestone 3)
-- SHAP values (Milestone 3)
-- Feature ablation studies (Milestone 3)
+- Permutation importance
+- SHAP values
+- Feature ablation studies
 
 ---
 
@@ -479,7 +479,7 @@ diff <(parquet-tools head features_live.parquet) \
 | **Label Definition** | Binary (spike vs normal) | Simplifies problem, actionable predictions |
 | **Feature Count** | 13 features | Multi-scale returns, volatility, spread, intensity |
 
-### Next Steps (Milestone 3)
+### Next Steps
 
 1. ✅ Feature specification complete
 2. 🔜 Train baseline ML model (logistic regression, random forest)

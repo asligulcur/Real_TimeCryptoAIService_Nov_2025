@@ -2,7 +2,7 @@
 
 **Document Version:** 1.0  
 **Last Updated:** November 26, 2025  
-**Owner:** CMU Heinz OAI Team
+**Owner:** Asli Gulcur
 
 ---
 
@@ -29,12 +29,12 @@ This document defines Service Level Objectives (SLOs) for the Crypto Volatility 
 
 ### Current Performance
 **Status:** ⚠️ **Needs Improvement**  
-**Baseline Measurement (Week 5):**
+**Baseline Measurement:**
 - p50: 685ms
 - p95: 1,838ms
 - p99: ~2,500ms (estimated)
 
-**Recent Measurement (Week 6 - Live Testing):**
+**Recent Measurement (Live Testing):**
 - p50: ~80-90ms
 - p95: ~100-120ms
 - Status: ✅ **MEETING SLO** (significant improvement after optimization)
@@ -77,10 +77,10 @@ If SLO is breached:
 ### Current Performance
 **Status:** ✅ **EXCEEDING SLO**  
 **Baseline Measurement:**
-- Success rate: 100% (120/120 requests during Week 5 load testing)
+- Success rate: 100% (120/120 requests during load testing)
 - Error rate: 0%
 
-**Live Testing (Week 6):**
+**Live Testing:**
 - Success rate: 100% (30/30 requests)
 - Error rate: 0%
 
@@ -122,7 +122,7 @@ If SLO is breached:
 
 ### Current Performance
 **Status:** 🔴 **NOT MEETING SLO**  
-**Baseline Measurement (Week 6):**
+**Baseline Measurement:**
 - Consumer lag: ~15,110 messages (initial backlog)
 - Trend: Increasing (ingestor producing faster than consumer can process)
 
@@ -170,7 +170,7 @@ If SLO is breached:
 - Recall: ~0.78
 
 **Production Monitoring:**
-- Live accuracy tracking not yet implemented (Week 6 Task 4 - Evidently)
+- Live accuracy tracking not yet implemented (Evidently)
 - Will implement drift detection to monitor ongoing accuracy
 
 ### Error Budget
@@ -254,14 +254,14 @@ SLOs should be adjusted if:
 - [x] Prometheus metrics instrumented
 - [x] Grafana dashboards created
 - [x] All SLIs measurable in real-time
-- [ ] Alerting rules configured (Week 6 Task 6 - Runbook)
+- [ ] Alerting rules configured (Runbook)
 - [ ] PagerDuty/Slack integration (future)
 
 ### Documentation
 - [x] SLO targets defined and documented
 - [x] Measurement methodology documented
 - [x] Improvement actions documented
-- [ ] Runbook created with remediation steps (Week 6 Task 6)
+- [ ] Runbook created with remediation steps
 
 ### Process
 - [ ] Weekly SLO review meeting scheduled

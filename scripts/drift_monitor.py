@@ -9,8 +9,7 @@ This script:
 4. Saves HTML report and summary
 5. Alerts if significant drift detected
 
-Author: CMU Heinz OAI Team
-Course: Operationalizing AI
+Author: Asli Gulcur
 Date: November 2025
 """
 

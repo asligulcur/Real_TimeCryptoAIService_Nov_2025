@@ -160,16 +160,17 @@ See `.env.example` for all available options.
 
 ## 📚 Documentation
 
-### Core Documentation
-- **README.md** - Complete project documentation (875 lines)
-- **WEEK6_COMPLETION_SUMMARY.md** - Week 6 deliverables status
+### Core
+- **README.md** - Complete project documentation
+- **docs/PROJECT_EXECUTIVE_SUMMARY.md** - Project overview
+- **docs/MODEL_CARD.md** - Model documentation (includes the leakage caveat)
+- **docs/feature_spec.md** - Feature specifications
 
 ### Architecture & Operations
-- **docs/architecture_diagram.md** - System architecture with Mermaid diagram
-- **docs/slo.md** - Service Level Objectives (450+ lines)
-- **docs/runbook.md** - Operations runbook (650+ lines)
-- **docs/drift_summary.md** - Drift detection analysis (450+ lines)
-- **docs/MODEL_CARD.md** - Model documentation
+- **docs/slo.md** - Service Level Objectives
+- **docs/runbook.md** - Operations runbook
+- **docs/drift_summary.md** - Drift detection analysis
+- **docs/DRIFT_DETECTION_README.md** - Drift detection how-to
 
 ---
 
@@ -233,7 +234,7 @@ conda run -n evidently-env python scripts/generate_evidently_tutorial_style.py
 open reports/drift/evidently_drift_*.html
 
 # Check system health
-python scripts/verify_week6_system.py
+python scripts/verify_system.py
 
 # Monitor Kafka lag
 python scripts/kafka_lag_monitor.py

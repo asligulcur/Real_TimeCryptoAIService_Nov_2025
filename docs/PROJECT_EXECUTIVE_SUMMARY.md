@@ -1,7 +1,6 @@
 # Project Executive Summary: Real-Time Crypto Volatility Detection
 
 **Author:** Asli Gulcur
-**Course:** CMU Heinz - Operationalizing AI
 **Date:** November 8, 2025
 
 ---
@@ -17,19 +16,19 @@ This project successfully designed, built, and deployed an end-to-end MLOps pipe
 *   **Real-Time Inference:** The model's inference performance was benchmarked and found to be over **4,000 times faster** than the 5-second real-time requirement, proving its capability for near-instantaneous predictions.
 *   **Robust & Scalable Architecture:** The use of Kafka and Docker provides a decoupled, scalable, and resilient architecture capable of handling high-throughput data streams.
 
-This document provides a milestone-by-milestone breakdown of the project's development, key technical achievements, and strategic learnings.
+This document provides a phase-by-phase breakdown of the project's development, key technical achievements, and strategic learnings.
 
 ---
 
 ## 2. Project Roadmap & System Architecture
 
-The project was executed across three core milestones, each building upon the last to create a complete MLOps lifecycle.
+The project was executed across three core phases, each building upon the last to create a complete MLOps lifecycle.
 
 **Project Roadmap:**
 
 ```
 +---------------------------+      +---------------------------+      +------------------------------+
-|       MILESTONE 1         |----->|       MILESTONE 2         |----->|         MILESTONE 3          |
+|       PHASE 1         |----->|       PHASE 2         |----->|         PHASE 3          |
 |   Data Ingestion &        |      |   Feature Engineering &   |      |   Model Training, Tracking,  |
 |   Streaming Pipeline      |      |   Exploratory Analysis    |      |   & Finalization             |
 +---------------------------+      +---------------------------+      +------------------------------+
@@ -49,7 +48,7 @@ graph TD
         A[Coinbase WebSocket API]
     end
 
-    subgraph "Milestone 1: Data Ingestion (Dockerized)"
+    subgraph "Phase 1: Data Ingestion (Dockerized)"
         B[Python Ingestor Script]
         C[Kafka Broker]
         D["Kafka Topic: ticks.raw"]
@@ -58,7 +57,7 @@ graph TD
         C -- Stores Messages In --> D
     end
 
-    subgraph "Milestone 2: Feature Engineering"
+    subgraph "Phase 2: Feature Engineering"
         E[Feature Engineering Script]
         F["Kafka Topic: btc_features"]
         D -- Consumes Raw Ticks --> E
@@ -66,7 +65,7 @@ graph TD
         E -- Publishes Features --> F
     end
 
-    subgraph "Milestone 3: Modeling & Inference"
+    subgraph "Phase 3: Modeling & Inference"
         G[Model Training Script]
         H[MLflow Server]
         I[Inference Script]
@@ -86,7 +85,7 @@ graph TD
 
 ---
 
-## 3. Milestone 1: Real-Time Data Ingestion & Streaming
+## 3. Phase 1: Real-Time Data Ingestion & Streaming
 
 **Objective:** Build a robust, containerized data pipeline to ingest live cryptocurrency trade data and stream it reliably using Apache Kafka.
 
@@ -107,7 +106,7 @@ graph TD
 
 ---
 
-## 4. Milestone 2: Feature Engineering & Data Analysis
+## 4. Phase 2: Feature Engineering & Data Analysis
 
 **Objective:** Process the raw data stream to engineer meaningful features for predicting volatility and prepare the dataset for model training.
 
@@ -126,11 +125,11 @@ graph TD
 *   `data/processed/`: Directory containing the final train and test datasets.
 *   `notebooks/eda.ipynb`: Notebook with analysis and visualizations.
 
-**Learnings:** This milestone highlighted the importance of domain-specific feature engineering. Simply using raw prices is insufficient; creating features that capture change over time (like volatility and momentum) is key. The decision to use a time-based split was a critical methodological choice that ensures the model is evaluated under realistic, forward-looking conditions.
+**Learnings:** This phase highlighted the importance of domain-specific feature engineering. Simply using raw prices is insufficient; creating features that capture change over time (like volatility and momentum) is key. The decision to use a time-based split was a critical methodological choice that ensures the model is evaluated under realistic, forward-looking conditions.
 
 ---
 
-## 5. Milestone 3: Model Training, Tracking, & Finalization
+## 5. Phase 3: Model Training, Tracking, & Finalization
 
 **Objective:** Train, evaluate, and select a production model; track all experiments using MLflow; and benchmark the final model's performance.
 
@@ -152,4 +151,4 @@ graph TD
 *   `models/MODEL_CARD.md`: Detailed documentation for the production model.
 *   `reports/`: Directory containing final evaluation and data drift reports.
 
-**Learnings:** This final milestone brought the project to a production-ready state. The key learning was the importance of a systematic and automated approach to modeling. By scripting the training and evaluation process and using MLflow, we moved from ad-hoc notebook experiments to a reliable, repeatable, and trackable system for producing and managing models. The focus on a proper evaluation metric (PR-AUC) was critical for correctly identifying the best model for this imbalanced problem.
+**Learnings:** This final phase brought the project to a production-ready state. The key learning was the importance of a systematic and automated approach to modeling. By scripting the training and evaluation process and using MLflow, we moved from ad-hoc notebook experiments to a reliable, repeatable, and trackable system for producing and managing models. The focus on a proper evaluation metric (PR-AUC) was critical for correctly identifying the best model for this imbalanced problem.
