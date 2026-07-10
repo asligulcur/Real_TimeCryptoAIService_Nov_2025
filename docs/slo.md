@@ -282,9 +282,8 @@ SLOs should be adjusted if:
 - **Kafka Lag Monitor:** http://localhost:9091/metrics
 
 ### Related Documents
-- `docs/runbook.md` - Operational procedures (Week 6 Task 6)
-- `docs/drift_summary.md` - Model drift detection (Week 6 Task 4)
-- `WEEK5_BRIEF_LATENCY_REPORT.md` - Baseline performance measurements
+- `docs/runbook.md` - Operational procedures
+- `docs/drift_summary.md` - Model drift detection
 - `README.md` - System architecture and setup
 
 ### Industry References
