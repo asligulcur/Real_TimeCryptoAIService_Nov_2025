@@ -8,7 +8,7 @@
 **Model Type:** Random Forest Classifier  
 **Version:** 1.0  
 **Date:** November 8, 2025
-**Owner:** CMU Heinz - Operationalizing AI Course  
+**Owner:** Asli Gulcur  
 **Framework:** scikit-learn
 
 ### Model Description
@@ -33,7 +33,7 @@ Real-time alerting system for cryptocurrency trading platforms to detect abnorma
 
 ## Training Data
 
-**Source:** Kraken Exchange WebSocket API (simulated)
+**Source:** Coinbase Exchange WebSocket API
 **Symbol:** BTC/USD (Bitcoin/US Dollar)  
 **Period:** November 2025  
 **Total Records:** 32,233 observations  
@@ -144,7 +144,7 @@ This section validates that the model meets both functional and non-functional r
 | **Recall** | **1.0000** |
 | **PR-AUC** | **1.0000** |
 
-**Conclusion:** The model is extremely efficient and well-suited for a high-throughput, real-time streaming environment, while maintaining excellent predictive accuracy on the test set.
+**Conclusion:** The model is extremely efficient and well-suited for a high-throughput, real-time streaming environment. Its reported test-set accuracy, however, is **not** a real-world result — it reflects the target leakage described at the top of this card.
 
 ## Ethical Considerations
 
@@ -154,9 +154,10 @@ This section validates that the model meets both functional and non-functional r
 - **Market Condition Bias:** The training data may not include "black swan" or extreme market events.
 
 ### Limitations
-1. **Recency Bias:** Assumes recent market patterns will persist.
-2. **Single Asset:** Not tested on altcoins or other trading pairs.
-3. **No Fundamental Data:** Ignores news, sentiment, and other external factors.
+1. **Target leakage (critical):** The label is a fixed threshold on `volatility_60s`, which is also a model input feature — so the reported accuracy measures a near-tautology, not predictive skill. **The model is not production-viable as trained;** the deliverable is the serving/monitoring pipeline, not this classifier.
+2. **Recency Bias:** Assumes recent market patterns will persist.
+3. **Single Asset:** Not tested on altcoins or other trading pairs.
+4. **No Fundamental Data:** Ignores news, sentiment, and other external factors.
 
 ### Risks
 - **Overconfidence:** High precision may lead to over-reliance. The model is not infallible.
@@ -186,7 +187,7 @@ This section validates that the model meets both functional and non-functional r
 **Random Seed:** 42  
 
 **Key Dependencies:**
-- `scikit-learn==1.7.2`
+- `scikit-learn==1.5.1`
 - `pandas==2.3.3`
 - `mlflow==3.5.1`
 - `numpy==2.3.4`
@@ -207,11 +208,11 @@ The entire training and evaluation pipeline can be reproduced by:
 
 ## Contact & Support
 
-**Owner:** Asli Gulcur - CMU Heinz - Operationalizing AI Course  
+**Owner:** Asli Gulcur  
 **Last Updated:** November 8, 2025  
 
 ---
 
-**Model Status:** ✅ **PRODUCTION READY**
+**Model Status:** ⚠️ **Not production-ready** — the training pipeline has target leakage (see the caveat at the top), so the reported metrics do not reflect real predictive skill. The production-grade serving and monitoring infrastructure is the actual deliverable.
 
-**Risk Level:** 🟢 Low (model exceeds all performance thresholds with robust validation on test data)
+**Risk Level:** 🔴 The reported metrics are leakage-driven, not real performance — this model must not be deployed as trained.
