@@ -12,7 +12,7 @@ The interesting part of this project is not the model — it's the operational s
 
 Real-time inference on market data is mostly a systems problem. Prices arrive continuously and unreliably, the upstream feed drops, consumers fall behind, and a bad model needs to be pulled without downtime. This project treats those concerns as first-class:
 
-- **Ingestion survives a flaky upstream.** The WebSocket ingestor reconnects with exponential backoff (1s → 60s cap, up to 10 attempts) and wraps the Kafka producer in a circuit breaker and per-message send retries.
+- **Ingestion survives upstream disconnects.** The WebSocket ingestor reconnects with exponential backoff (1s → 60s cap, up to 10 attempts) and wraps the Kafka producer in a circuit breaker and per-message send retries.
 - **Kafka decouples produce from consume.** Ticks land on `ticks.raw`; the featurizer computes features into `ticks.features`. A slow or restarting consumer doesn't drop upstream data.
 - **There is a fallback model and a rollback path.** A rule-based baseline can replace the ML model via a single environment variable (`MODEL_VARIANT=baseline`) plus an API restart.
 - **The system is observable.** The API exposes Prometheus metrics (latency histograms, request/error counters, prediction-class and confidence distributions); a separate exporter publishes Kafka consumer lag; Grafana visualizes it; Evidently produces drift reports.
