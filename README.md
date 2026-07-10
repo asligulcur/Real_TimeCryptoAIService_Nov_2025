@@ -105,7 +105,7 @@ Consoles: API docs `http://localhost:8000/docs` · MLflow `http://localhost:5001
 
 ## Results & the leakage caveat
 
-**Do not quote the model accuracy as a real-world result.** The training pipeline as written measures a near-tautology.
+The reported model accuracy is not a real-world result: the training pipeline as written measures a near-tautology, and the mechanism is worth being precise about.
 
 How the label is built (`scripts/create_train_test_split.py:36`):
 
