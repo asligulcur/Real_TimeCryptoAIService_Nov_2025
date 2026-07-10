@@ -182,7 +182,7 @@ api/         main.py (FastAPI), Dockerfile config, examples
 docker/      compose.yaml, prometheus.yml, grafana/ provisioning + dashboards
 data/        processed/ (features.parquet, train/test splits), eda/
 docs/        MODEL_CARD.md, slo.md, runbook.md, drift docs, architecture diagram
-reports/     model evaluation summaries, Evidently drift HTML
+reports/     Evidently drift HTML reports
 tests/       load test, inference-speed, integration, MLflow checks
 config.yaml  central configuration (Kafka, WebSocket, features, model, monitoring)
 ```

@@ -15,7 +15,7 @@ This module provides data drift detection using Evidently AI.
 python3 scripts/drift_monitor_simple.py
 
 # View report
-open reports/drift/drift_report_*.html
+open reports/drift/evidently_drift_*.html
 ```
 
 ## What Was Delivered:

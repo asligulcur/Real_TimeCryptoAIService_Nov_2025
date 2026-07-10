@@ -212,9 +212,8 @@ reports/drift/drift_metrics.json
 ## Related Reports & Documentation
 
 ### Evidently Reports
-- **Latest HTML Report:** `reports/drift/drift_report_20251126_125000.html`
-- **Drift Metrics JSON:** `reports/drift/drift_metrics.json`
-- **Historical Reports:** `reports/drift/` (last 12 weeks retained)
+- **Drift Report (HTML):** `reports/drift/evidently_drift_20251126_135117.html`
+- **Drift Reports Folder:** `reports/drift/`
 
 ### Project Documentation
 - **SLO Document:** `docs/slo.md` - Service level objectives and error budgets
