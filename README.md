@@ -62,6 +62,8 @@ Real-time inference on market data is mostly a systems problem. Prices arrive co
 
 Components in `docker/compose.yaml`: Zookeeper, Kafka, MLflow, API, Prometheus, Grafana. The ingestor, featurizer, and Kafka-lag exporter run as standalone Python processes (not in Compose) — see the pipeline commands below.
 
+![The FastAPI serving layer, live — interactive API docs. `POST /predict` takes the 13-feature vector and returns a spike prediction with probability; `/health`, `/version`, and a Prometheus `/metrics` endpoint round out the service.](docs/api-swagger-docs.png)
+
 ---
 
 ## Quickstart
@@ -118,6 +120,8 @@ The exact same `volatility_60s` column is then included in the model's input fea
 
 - The reported test scores (Random Forest F1 ≈ 0.9984, PR-AUC ≈ 1.0; even the trivial z-score baseline scores F1 ≈ 0.994) reflect the model rediscovering `volatility_60s > 0.0418`, not predicting anything. The three volatility features account for ~79% of Random Forest feature importance (`models/artifacts/feature_importance.csv`).
 - Because the label uses the *current* `volatility_60s` rather than a *future* window, this is not a forecasting task at all as coded — despite `config.yaml` declaring `target_horizon: 60`. The horizon is never applied.
+
+![Feature correlation matrix — the three volatility features (`volatility_30s/60s/120s`) are perfectly correlated (1.00), so the model needs only one of them to recover the label. Returns and intensity features are similarly redundant within their families.](data/eda/feature_correlations.png)
 
 The train/test split is an additional, secondary problem: it is a **random** stratified `train_test_split` (`scripts/create_train_test_split.py:57-62`), not a temporal split, which leaks across time for a time-series problem. (This is moot next to the label leakage above, but worth fixing too.)
 
