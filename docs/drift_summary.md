@@ -241,7 +241,7 @@ cd "/path/to/crypto-volatility-real-time"
 python3 scripts/drift_monitor_simple.py
 
 # View HTML report in browser
-open reports/drift/drift_report_20251126_*.html
+open reports/drift/evidently_drift_*.html
 
 # Check JSON metrics
 cat reports/drift/drift_metrics.json | jq '.metrics[] | select(.metric == "DatasetDriftMetric")'

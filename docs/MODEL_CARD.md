@@ -59,7 +59,7 @@ Binary classification where `1` indicates a volatility spike (abnormal volatilit
 **Train/Test Split Quality:**
 - An 80/20 stratified split was created by the `03_model_training.ipynb` notebook and saved to disk.
 - The final `train.py` script uses these pre-split and validated datasets to ensure consistency.
-- Data drift analysis was performed, and the report is available at `reports/evidently_data_drift_report.html`.
+- Data drift analysis was performed; drift reports are written to `reports/drift/`.
 
 ## Features
 
