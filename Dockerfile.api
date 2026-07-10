@@ -24,6 +24,9 @@ COPY api/ ./api/
 # Copy the trained model artifacts
 COPY models/artifacts/ ./models/artifacts/
 
+# Copy the rule-based baseline model (used when MODEL_VARIANT=baseline for rollback)
+COPY ml/ ./ml/
+
 # Expose port 8000 (FastAPI default)
 EXPOSE 8000
 
