@@ -1,4 +1,7 @@
 # End-to-End System Test Report
+
+> **⚠️ Metric caveat (read first).** Any F1 / PR-AUC figures in this report (≈ 0.998 / ≈ 1.0) reflect **target leakage**, not real predictive performance: the label is a fixed threshold on `volatility_60s`, which is also a model input feature. These are **not** real-world results — see the "Results & the leakage caveat" section of the top-level `README.md`.
+
 **Project:** Crypto Volatility Detection in Real Time  
 **Student:** Asli Gulcur  
 **Test Date:** November 16, 2025  
