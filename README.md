@@ -191,4 +191,4 @@ More detail — SLO definitions, incident runbook, model card, and drift methodo
 
 ---
 
-Author: Asli Gulcur. Data source: Coinbase Exchange WebSocket (`BTC-USD` ticker).
+Author: [Asli Gulcur](https://asligulcur.github.io/). Data source: Coinbase Exchange WebSocket (`BTC-USD` ticker).
