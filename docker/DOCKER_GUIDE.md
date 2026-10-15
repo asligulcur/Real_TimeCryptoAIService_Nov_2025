@@ -163,4 +163,3 @@ Then show:
 - [x] Port 8000 exposed
 - [x] Startup script created
 - [ ] Test with `docker compose up` (need Docker running)
-- [ ] Team documentation (next step)
