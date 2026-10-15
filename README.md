@@ -2,6 +2,8 @@
 
 A streaming ML system that ingests live BTC-USD market data from Coinbase, engineers rolling-window features in real time, serves volatility-spike predictions over an HTTP API, and monitors the whole pipeline with Prometheus, Grafana, and Evidently.
 
+*Built solo for CMU Heinz College's Foundations of Operationalizing AI (November 2025), with AI coding assistance.*
+
 The interesting part of this project is not the model — it's the operational scaffolding around it: resilient WebSocket ingestion with exponential backoff and a circuit breaker, Kafka buffering, a rule-based fallback model with an env-var rollback switch, a full metrics/dashboards/alerting stack, and drift detection. That is the story worth reading.
 
 > **On the model metric:** the classifier here is a deliberate stand-in, and its scores are not presented as a performance result. The label is a threshold on `volatility_60s`, which the model also receives as an input feature, so the reported F1 ≈ 0.998 / PR-AUC ≈ 1.0 reflect target leakage rather than predictive skill. The [Results](#results--the-leakage-caveat) section documents this precisely. The value of the project is the production pipeline, not the model.
