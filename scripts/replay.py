@@ -18,7 +18,7 @@ Features:
 - Preserves original timestamps
 - Can replay subset or full dataset
 
-Author: Feature Engineering Team
+Author: Asli Gulcur
 Date: November 7, 2025
 """
 
