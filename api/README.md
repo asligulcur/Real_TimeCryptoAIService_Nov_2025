@@ -379,10 +379,9 @@ pip install -r requirements.txt
 
 ---
 
-## 👥 Team
+## Author
 
-**Asli Gulcur**  
-Real-time ML serving & monitoring
+**Asli Gulcur**
 
 ---
 
@@ -392,4 +391,4 @@ Personal project — real-time ML serving and monitoring.
 
 ---
 
-**Need help?** Check the `/docs` endpoint or contact the team.
+**Need help?** Check the `/docs` endpoint or open an issue on this repo.
