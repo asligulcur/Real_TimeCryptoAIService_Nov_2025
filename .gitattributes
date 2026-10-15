@@ -1,0 +1,4 @@
+# Generated Evidently drift report
+reports/**/*.html linguist-generated
+# Exploratory notebooks; the pipeline itself is Python
+notebooks/*.ipynb linguist-documentation
