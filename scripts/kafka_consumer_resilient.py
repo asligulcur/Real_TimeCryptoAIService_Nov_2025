@@ -9,7 +9,7 @@ Production-ready Kafka consumer with:
 - Health monitoring
 - Error handling and recovery
 
-Author: Crypto Volatility Team
+Author: Asli Gulcur
 Date: November 26, 2025
 """
 
