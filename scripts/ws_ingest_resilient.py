@@ -10,7 +10,7 @@ Production-ready WebSocket ingestor with:
 - Health monitoring
 - Metrics tracking
 
-Author: Crypto Volatility Team
+Author: Asli Gulcur
 Date: November 26, 2025
 """
 
