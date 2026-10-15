@@ -431,9 +431,9 @@ tail -f logs/app.log
    - **Medium drift (30-50%):** Accelerate retraining, increase monitoring
    - **High drift (> 50%):** Consider rollback to baseline, emergency retraining
 
-4. **Notify data science team:**
-   - Share drift report
-   - Request retraining with recent data
+4. **Plan retraining:**
+   - Review the drift report
+   - Retrain with recent data
 
 5. **If F1 < 0.70, consider rollback:**
    ```bash
