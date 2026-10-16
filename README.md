@@ -152,20 +152,21 @@ Note the latency: the model itself takes microseconds, but end-to-end HTTP p95 w
 
 **Kafka as a buffer.** Decoupling ingestion from featurization means a restarting or lagging featurizer replays from Kafka instead of losing ticks.
 
-**Baseline fallback + rollback.** `ml/baseline.py` is a transparent rule-based predictor (weighted thresholds on volatility, return, intensity). The API selects it via `MODEL_VARIANT=baseline`, enabling a fast rollback when the ML model misbehaves. The API image bundles `ml/`, so the same rollback works inside the container.
+**Baseline fallback + rollback.** `ml/baseline.py` is a transparent rule-based predictor (weighted thresholds on volatility, return, intensity). The API selects it via `MODEL_VARIANT=baseline`, enabling a fast rollback when the ML model misbehaves.
 
-**Observability.** `api/main.py` defines ~12 Prometheus metric families — latency histograms (`predict_latency_seconds`, `api_request_duration_seconds`), request/error counters, prediction-class and confidence distributions, and model-variant gauges. `scripts/kafka_lag_monitor.py` exports four consumer-lag metrics on `:9091`. Prometheus scrapes both; a provisioned Grafana dashboard (`docker/grafana/dashboards/`) charts latency, error rate, and consumer lag.
+**Observability.** `api/main.py` defines ~12 Prometheus metric families — latency histograms (`predict_latency_seconds`, `api_request_duration_seconds`), request/error counters, prediction-class and confidence distributions, and model-variant gauges. `scripts/kafka_lag_monitor.py` exports four Kafka offset metrics on `:9091`. Prometheus scrapes both; a provisioned Grafana dashboard (`docker/grafana/dashboards/`) charts latency, error rate, and consumer lag.
 
-**Drift detection.** Evidently generates data-drift reports (KS test, Wasserstein distance) into `reports/drift/`. See limitations.
+**Drift detection.** Evidently generates data-drift reports (Kolmogorov–Smirnov test) into `reports/drift/`. See Limitations.
 
-**Experiment tracking.** `models/train.py` logs all three models (z-score baseline, logistic regression, Random Forest) with params, metrics, and artifacts to MLflow.
+**Experiment tracking.** `models/train.py` logs all three models (z-score baseline, logistic regression, Random Forest) to MLflow with their params and metrics.
 
 ---
 
 ## Limitations & known issues
 
-- **Model metric is leakage-driven** (see above) — the single most important thing to fix before presenting any accuracy claim.
+- **Model score reflects data leakage** (see Results); this must be fixed before any accuracy claim.
 - **Random, non-temporal split** for time-series data.
+- **Two known bugs.** The 500-update feature buffer covers under 30 seconds, so the 30/60/120-second features are effectively identical (see the Results caption). And the lag monitor reads its own consumer group, so its "lag" is the topic's total size, not how far the featurizer is behind.
 - **Streaming and serving are demonstrated independently, not yet wired end to end.** `/predict` takes a features JSON body; the featurizer publishes to `ticks.features`, but no consumer yet reads that topic and calls the API automatically. Wiring a `ticks.features` consumer to `/predict` is the natural next step.
 - **Drift reports use synthetic data.** `scripts/generate_evidently_tutorial_style.py` fabricates reference/current samples with injected drift to demonstrate the real Evidently API; it does not (yet) run drift on the live feature distribution. It also requires a separate Python 3.11 environment due to an Evidently/Pydantic incompatibility with newer Python.
 - **SLOs are targets, not results.** `docs/slo.md` defines them; the only saved SLO measurement is one 20-request local load test (`LOAD_TEST_REPORT.md`).
