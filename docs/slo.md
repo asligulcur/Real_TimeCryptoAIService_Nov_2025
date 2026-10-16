@@ -103,7 +103,7 @@ If SLO is breached:
 - **Red (> 10,000):** Critical - significant lag, predictions may be outdated
 
 ### Measured so far
-No saved measurement yet. `scripts/kafka_lag_monitor.py` exports consumer lag to Prometheus (port 9091) for this SLI.
+No saved measurement yet. `scripts/kafka_lag_monitor.py` is meant to export this, but currently reports the topic's total size (see README Limitations).
 
 ### Error Budget
 - **SLO:** Lag < 1,000 messages for 95% of time
