@@ -10,14 +10,14 @@ The focus of this project is the operational scaffolding around the model: resil
 
 ---
 
-## Why this design is interesting
+## Design
 
 Real-time inference on market data is mostly a systems problem. Prices arrive continuously and unreliably, the upstream feed drops, consumers fall behind, and a bad model needs to be pulled without downtime. The design addresses each of these:
 
 - **Ingestion survives upstream disconnects.** The WebSocket ingestor reconnects with exponential backoff (1s → 60s cap, up to 10 attempts) and wraps the Kafka producer in a circuit breaker and per-message send retries.
 - **Kafka decouples produce from consume.** Ticks land on `ticks.raw`; the featurizer computes features into `ticks.features`. A slow or restarting consumer doesn't drop upstream data.
 - **There is a fallback model and a rollback path.** A rule-based baseline can replace the ML model via a single environment variable (`MODEL_VARIANT=baseline`) plus an API restart.
-- **The system is observable.** The API exposes Prometheus metrics (latency histograms, request/error counters, prediction-class and confidence distributions); a separate exporter publishes Kafka consumer lag; Grafana visualizes it; Evidently produces drift reports.
+- **The system is observable.** The API exposes Prometheus metrics (latency histograms, request/error counters, prediction-class and confidence distributions); a separate exporter publishes Kafka offset metrics; Grafana visualizes it; Evidently produces drift reports.
 
 ---
 
@@ -66,7 +66,7 @@ Components in `docker/compose.yaml`: Zookeeper, Kafka, MLflow, API, Prometheus, 
 
 ![FastAPI Swagger docs for the Crypto Volatility Detection API](docs/api-swagger-docs.png)
 
-*The live service through FastAPI's auto-generated OpenAPI (Swagger) docs — the interface is framework-provided; the endpoints and schemas are rendered from `api/main.py`. `POST /predict` takes the 13-feature vector and returns a spike prediction with probability; `/health`, `/version`, and a Prometheus `/metrics` endpoint round out the service.*
+*The API's auto-generated docs. `POST /predict` takes the 13 features and returns a spike prediction with its probability; `/health`, `/version` and `/metrics` support operations.*
 
 ---
 
@@ -75,7 +75,7 @@ Components in `docker/compose.yaml`: Zookeeper, Kafka, MLflow, API, Prometheus, 
 Requires Docker and Python 3.11+ (the API image uses Python 3.12).
 
 ```bash
-git clone <repo-url> && cd <repo-dir>
+git clone https://github.com/asligulcur/Real_TimeCryptoAIService_Nov_2025.git && cd Real_TimeCryptoAIService_Nov_2025
 cp .env.example .env
 
 # Start infra + API (Kafka, Zookeeper, MLflow, Prometheus, Grafana, API)
@@ -93,7 +93,7 @@ Run the live data pipeline (separate terminals, from repo root):
 ```bash
 python scripts/ws_ingest_resilient.py       # Coinbase ticks -> Kafka ticks.raw
 python features/featurizer.py                # features -> ticks.features + Parquet
-python scripts/kafka_lag_monitor.py          # consumer-lag exporter on :9091
+python scripts/kafka_lag_monitor.py          # Kafka offset exporter on :9091
 ```
 
 Try a prediction:
@@ -160,6 +160,8 @@ Note the latency: the model itself takes microseconds, but end-to-end HTTP p95 w
 
 **Experiment tracking.** `models/train.py` logs all three models (z-score baseline, logistic regression, Random Forest) to MLflow with their params and metrics.
 
+**Continuous integration.** Every push to `main` runs GitHub Actions: lint (Black, Ruff), unit tests, an integration test against a running API, a Docker build-and-run check, and a dependency vulnerability scan (report-only).
+
 ---
 
 ## Limitations & known issues
@@ -181,7 +183,7 @@ scripts/     ws_ingest_resilient.py, kafka_consumer_resilient.py,
 features/    featurizer.py — real-time rolling-window feature engineering
 models/      train.py, infer.py, artifacts/ (random_forest.joblib, feature_importance.csv)
 ml/          baseline.py — rule-based fallback model
-api/         main.py (FastAPI), Dockerfile config, examples
+api/         main.py (FastAPI), curl examples, smoke test
 docker/      compose.yaml, prometheus.yml, grafana/ provisioning + dashboards
 data/        processed/ (features.parquet, train/test splits), eda/
 docs/        MODEL_CARD.md, slo.md, runbook.md, feature_spec.md, API docs screenshot
@@ -190,7 +192,7 @@ tests/       load test, inference-speed, integration, MLflow checks
 config.yaml  central configuration (Kafka, WebSocket, features, model, monitoring)
 ```
 
-More detail — SLO definitions, incident runbook, model card, and drift methodology — lives under `docs/`.
+More detail (SLO definitions, runbook, model card, feature spec) lives under `docs/`.
 
 ---
 
