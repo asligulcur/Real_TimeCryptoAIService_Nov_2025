@@ -422,7 +422,7 @@ tail -f logs/app.log
 
 2. **Check SLO dashboard:**
    ```bash
-   # View docs/slo.md for current metrics
+   # View docs/slo.md for SLO targets
    cat docs/slo.md
    ```
 
