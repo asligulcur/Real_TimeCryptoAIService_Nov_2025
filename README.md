@@ -112,12 +112,12 @@ Consoles: API docs `http://localhost:8000/docs` · MLflow `http://localhost:5001
 
 ## Results & the leakage caveat
 
-The reported model accuracy is not a real-world result: the training pipeline as written measures a near-tautology, and the mechanism is worth being precise about.
+The reported model accuracy is not a real-world result. Here is why.
 
 How the label is built (`scripts/create_train_test_split.py:36`):
 
 ```python
-df['volatility_spike'] = (df['volatility_60s'] > 0.041799).astype(int)
+df['volatility_spike'] = (df['volatility_60s'] > THRESHOLD).astype(int)  # THRESHOLD = 0.041799
 ```
 
 The exact same `volatility_60s` column is then included in the model's input features (`models/train.py:56-63`, `config.yaml:67-80`, `api/main.py:50-64`). So the model is handed the quantity the label is a deterministic threshold of. Two consequences:
@@ -127,13 +127,13 @@ The exact same `volatility_60s` column is then included in the model's input fea
 
 ![Feature correlation matrix heatmap](data/eda/feature_correlations.png)
 
-*The three volatility features (`volatility_30s/60s/120s`) are perfectly correlated (1.00), so the model needs only one of them to recover the label. Returns and intensity features are similarly redundant within their families.*
+*The three volatility features are effectively the same number: `volatility_60s` equals `volatility_120s` in every row. The feature buffer holds the last 500 price updates, which covers less than 30 seconds of trading, so all three windows see the same data. The intensity features hit the same cap.*
 
 The train/test split is an additional, secondary problem: it is a **random** stratified `train_test_split` (`scripts/create_train_test_split.py:57-62`), not a temporal split, which leaks across time for a time-series problem. (This is moot next to the label leakage above, but worth fixing too.)
 
-**To make the metric meaningful, the label must be decoupled from the features** — e.g. define the target as a *future* volatility spike over a forward horizon (using `target_horizon`), exclude present/overlapping volatility columns from the feature set, and switch to a time-ordered (walk-forward) split. Until then, treat the model as a placeholder and the pipeline — not the score — as the deliverable.
+**To make the metric meaningful, the label must be decoupled from the features** — e.g. define the target as a *future* volatility spike over a forward horizon (using `target_horizon`), exclude present/overlapping volatility columns from the feature set, and switch to a time-ordered (walk-forward) split.
 
-What *is* verified and honest to report:
+What the saved measurements support:
 
 | Item | Measured value | Source |
 |---|---|---|
@@ -142,7 +142,7 @@ What *is* verified and honest to report:
 | Model inference cost | ~0.004 ms/sample (batched, ~248k samples/s) | `models/artifacts/inference_benchmark.txt` |
 | End-to-end HTTP p95 latency | 189 ms over a 20-request load test | `LOAD_TEST_REPORT.md` |
 
-Note the latency: single-prediction *model* inference is microseconds, but the measured end-to-end HTTP p95 was 189 ms on a small (20-request) load test — which the report itself flags as failing a <100 ms target. The "~100 ms p95" figure in older docs is not supported by the artifact; the honest number is 189 ms p95 at very low load, dominated by HTTP/serialization overhead rather than the model.
+Note the latency: the model itself takes microseconds, but end-to-end HTTP p95 was 189 ms on a small (20-request) load test, so almost all of it is outside the model.
 
 ---
 
