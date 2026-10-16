@@ -27,23 +27,13 @@ This document defines Service Level Objectives (SLOs) for the Crypto Volatility 
 - Feature extraction and validation (~100-200ms)
 - Response serialization (~50-100ms)
 
-### Current Performance
-**Status:** ⚠️ **Needs Improvement**  
-**Baseline Measurement:**
-- p50: 685ms
-- p95: 1,838ms
-- p99: ~2,500ms (estimated)
-
-**Recent Measurement (Live Testing):**
-- p50: ~80-90ms
-- p95: ~100-120ms
-- Status: ✅ **MEETING SLO** (significant improvement after optimization)
+### Measured so far
+One local load test (`LOAD_TEST_REPORT.md`, 20 requests, 4 workers): p50 120 ms, p95 189 ms. Inside the 800 ms target, but a single short test, not a 30-day measurement.
 
 ### Error Budget
 - **SLO:** 95% of requests ≤ 800ms
 - **Error Budget:** 5% of requests may exceed 800ms
 - **Budget Period:** 30 days
-- **Current Consumption:** ~2% (based on recent testing)
 
 ### Alerting Thresholds
 - **Warning:** p95 > 600ms for 5 minutes
@@ -74,20 +64,12 @@ If SLO is breached:
 - Unplanned downtime: ~0.5 hours/month
 - Total allowable downtime: ~7.7 hours/month
 
-### Current Performance
-**Status:** ✅ **EXCEEDING SLO**  
-**Baseline Measurement:**
-- Success rate: 100% (120/120 requests during load testing)
-- Error rate: 0%
-
-**Live Testing:**
-- Success rate: 100% (30/30 requests)
-- Error rate: 0%
+### Measured so far
+Same load test: 20 of 20 requests succeeded. No sustained availability measurement yet.
 
 ### Error Budget
 - **SLO:** 99% uptime = 1% error budget
 - **Monthly Budget:** ~7.7 hours downtime allowed
-- **Current Consumption:** 0% (no errors observed)
 
 ### Alerting Thresholds
 - **Warning:** Success rate < 99.5% for 5 minutes
@@ -120,21 +102,12 @@ If SLO is breached:
 - **Orange (5,000-10,000):** Concerning - data staleness may impact model accuracy
 - **Red (> 10,000):** Critical - significant lag, predictions may be outdated
 
-### Current Performance
-**Status:** 🔴 **NOT MEETING SLO**  
-**Baseline Measurement:**
-- Consumer lag: ~15,110 messages (initial backlog)
-- Trend: Increasing (ingestor producing faster than consumer can process)
-
-**Contributing Factors:**
-- High ingestion rate from Coinbase WebSocket (10,500+ messages ingested)
-- Single consumer instance (not scaled)
-- No consumer optimization yet implemented
+### Measured so far
+No saved measurement yet. `scripts/kafka_lag_monitor.py` exports consumer lag to Prometheus (port 9091) for this SLI.
 
 ### Error Budget
 - **SLO:** Lag < 1,000 messages for 95% of time
 - **Error Budget:** 5% of time lag may be 1,000-5,000 messages
-- **Current Status:** Exceeding error budget (lag > 10,000 consistently)
 
 ### Alerting Thresholds
 - **Warning:** Lag > 1,000 messages for 10 minutes
@@ -162,16 +135,8 @@ If SLO is breached:
 **Measurement Window:** Weekly evaluation on last 7 days of production data  
 **Business Justification:** High accuracy ensures traders can trust the volatility predictions. F1 score balances precision (avoiding false alarms) and recall (catching real volatility spikes).
 
-### Current Performance
-**Status:** ✅ **MEETING SLO** (baseline model)  
-**Baseline Measurement (Training):**
-- F1 Score: ~0.80 (training set)
-- Precision: ~0.82
-- Recall: ~0.78
-
-**Production Monitoring:**
-- Live accuracy tracking not yet implemented (Evidently)
-- Will implement drift detection to monitor ongoing accuracy
+### Measured so far
+Not meaningful yet: the label leaks into the features, so test F1 ≈ 0.998 reflects leakage, not skill (see the README's Results section). This SLO applies once the label is redefined.
 
 ### Error Budget
 - **SLO:** F1 ≥ 0.75 for weekly evaluations
@@ -261,7 +226,7 @@ SLOs should be adjusted if:
 - [x] SLO targets defined and documented
 - [x] Measurement methodology documented
 - [x] Improvement actions documented
-- [ ] Runbook created with remediation steps
+- [x] Runbook created with remediation steps
 
 ### Process
 - [ ] Weekly SLO review meeting scheduled
@@ -283,7 +248,7 @@ SLOs should be adjusted if:
 
 ### Related Documents
 - `docs/runbook.md` - Operational procedures
-- `docs/drift_summary.md` - Model drift detection
+- `reports/drift/` - Evidently drift report (synthetic data)
 - `README.md` - System architecture and setup
 
 ### Industry References
