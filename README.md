@@ -4,7 +4,7 @@ A streaming ML system that ingests live BTC-USD market data from Coinbase, engin
 
 *Built solo for CMU Heinz College's Foundations of Operationalizing AI (November 2025), with AI coding assistance.*
 
-The interesting part of this project is not the model — it's the operational scaffolding around it: resilient WebSocket ingestion with exponential backoff and a circuit breaker, Kafka buffering, a rule-based fallback model with an env-var rollback switch, a metrics and dashboards stack with defined alert thresholds, and drift detection. That is the story worth reading.
+The focus of this project is the operational scaffolding around the model: resilient WebSocket ingestion with exponential backoff and a circuit breaker, Kafka buffering, a rule-based fallback model with an env-var rollback switch, a metrics and dashboards stack with defined alert thresholds, and drift detection.
 
 > **On the model metric:** the classifier here is a deliberate stand-in, and its scores are not presented as a performance result. The label is a threshold on `volatility_60s`, which the model also receives as an input feature, so the reported F1 ≈ 0.998 / PR-AUC ≈ 1.0 reflect target leakage rather than predictive skill. The [Results](#results--the-leakage-caveat) section documents this precisely. The value of the project is the production pipeline, not the model.
 
@@ -12,7 +12,7 @@ The interesting part of this project is not the model — it's the operational s
 
 ## Why this design is interesting
 
-Real-time inference on market data is mostly a systems problem. Prices arrive continuously and unreliably, the upstream feed drops, consumers fall behind, and a bad model needs to be pulled without downtime. This project treats those concerns as first-class:
+Real-time inference on market data is mostly a systems problem. Prices arrive continuously and unreliably, the upstream feed drops, consumers fall behind, and a bad model needs to be pulled without downtime. The design addresses each of these:
 
 - **Ingestion survives upstream disconnects.** The WebSocket ingestor reconnects with exponential backoff (1s → 60s cap, up to 10 attempts) and wraps the Kafka producer in a circuit breaker and per-message send retries.
 - **Kafka decouples produce from consume.** Ticks land on `ticks.raw`; the featurizer computes features into `ticks.features`. A slow or restarting consumer doesn't drop upstream data.
