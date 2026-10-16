@@ -168,7 +168,7 @@ Note the latency: single-prediction *model* inference is microseconds, but the m
 - **Random, non-temporal split** for time-series data.
 - **Streaming and serving are demonstrated independently, not yet wired end to end.** `/predict` takes a features JSON body; the featurizer publishes to `ticks.features`, but no consumer yet reads that topic and calls the API automatically. Wiring a `ticks.features` consumer to `/predict` is the natural next step.
 - **Drift reports use synthetic data.** `scripts/generate_evidently_tutorial_style.py` fabricates reference/current samples with injected drift to demonstrate the real Evidently API; it does not (yet) run drift on the live feature distribution. It also requires a separate Python 3.11 environment due to an Evidently/Pydantic incompatibility with newer Python.
-- **SLO figures in older docs are aspirational** — availability/error-rate/rollback-time numbers are targets, not results from a sustained production run. Only the values in the Results table are measured.
+- **SLOs are targets, not results.** `docs/slo.md` defines them; the only saved SLO measurement is one 20-request local load test (`LOAD_TEST_REPORT.md`).
 
 ---
 
@@ -183,7 +183,7 @@ ml/          baseline.py — rule-based fallback model
 api/         main.py (FastAPI), Dockerfile config, examples
 docker/      compose.yaml, prometheus.yml, grafana/ provisioning + dashboards
 data/        processed/ (features.parquet, train/test splits), eda/
-docs/        MODEL_CARD.md, slo.md, runbook.md, drift docs, architecture diagram
+docs/        MODEL_CARD.md, slo.md, runbook.md, feature_spec.md, API docs screenshot
 reports/     Evidently drift HTML reports
 tests/       load test, inference-speed, integration, MLflow checks
 config.yaml  central configuration (Kafka, WebSocket, features, model, monitoring)
