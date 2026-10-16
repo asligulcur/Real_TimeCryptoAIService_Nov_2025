@@ -6,7 +6,7 @@ A streaming ML system that ingests live BTC-USD market data from Coinbase, engin
 
 The focus of this project is the operational scaffolding around the model: resilient WebSocket ingestion with exponential backoff and a circuit breaker, Kafka buffering, a rule-based fallback model with an env-var rollback switch, a metrics and dashboards stack with defined alert thresholds, and drift detection.
 
-> **On the model metric:** the classifier here is a deliberate stand-in, and its scores are not presented as a performance result. The label is a threshold on `volatility_60s`, which the model also receives as an input feature, so the reported F1 ≈ 0.998 / PR-AUC ≈ 1.0 reflect target leakage rather than predictive skill. The [Results](#results--the-leakage-caveat) section documents this precisely. The value of the project is the production pipeline, not the model.
+> **The model's near-perfect score (F1 0.998) is due to data leakage.** The leakage is driven by how "high volatility" was defined: as one of the model's own inputs crossing a cutoff. The model just checks that input; it is not predicting. The [Results](#results--the-leakage-caveat) section shows where and how to fix it (predict the *next* 60 seconds). The deliverable is the pipeline around the model.
 
 ---
 
