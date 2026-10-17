@@ -1,6 +1,6 @@
-# Real-Time Crypto Volatility Detection
+# Real-Time Crypto Volatility Pipeline
 
-A streaming ML system that ingests live BTC-USD market data from Coinbase, engineers rolling-window features in real time, serves volatility-spike predictions over an HTTP API, and monitors the whole pipeline with Prometheus, Grafana, and Evidently.
+A streaming ML pipeline that ingests live BTC-USD market data from Coinbase, engineers rolling-window features in real time, serves volatility-spike predictions over an HTTP API, and monitors it with Prometheus, Grafana, and Evidently.
 
 *Built solo for CMU Heinz College's Foundations of Operationalizing AI (November 2025), with AI coding assistance.*
 
